@@ -57,6 +57,17 @@ class Alphabet:
         self._name_to_symbol[symbol.name] = symbol
         self._code_to_symbol[symbol.code] = symbol
 
+    def register_variable(self, name: str) -> Symbol:
+        """Register a new variable with the next avilable odd integer code."""
+        if name in self._name_to_symbol:
+            return self._name_to_symbol[name]
+
+        max_code = max(self._code_to_symbol.keys()) if self._code_to_symbol else -1
+        next_code = max_code + 2 if max_code % 2 ==1 else max_code + 1
+
+        sym = Symbol(name= name, code= next_code, symbol_type= SymbolType.VARIABLE)
+        self.register_variable(sym)
+        return sym
 
     def get_code(self,name:str) -> int:
         """Get the numeric Godel code for a given symbol name."""
